@@ -25,6 +25,15 @@ def test_guest_can_add_product_to_basket(browser, link):
     page.the_cost_of_the_basket_equals_the_item_price()
 
 
+def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
+    link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-girl-who-kicked-the-hornets-nest_199/"
+    page = ProductPage(browser, link)
+    page.open()
+    page.go_to_basket()
+    page.should_not_be_items_in_the_basket()
+    page.should_be_text_your_basket_is_empty()
+
+
 @pytest.mark.xfail
 def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
     link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-girl-who-kicked-the-hornets-nest_199/"

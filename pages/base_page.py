@@ -41,6 +41,13 @@ class BasePage:
 
         return False
 
+    def is_element_present(self, how, what):
+        try:
+            self.browser.find_element(how, what)
+        except NoSuchElementException:
+            return False
+        return True
+
     def is_disappeared(self, how, what, timeout=4):
         ### в течение 4 секунд ждем исчезновения элемента на странице
         ### если элемент все еще присутствует по истечении 4 с., возвращаем False
@@ -57,13 +64,20 @@ class BasePage:
             self.browser.find_element(*BasePageLocators.LOGIN_LINK)
         login_link.click()
 
+    def go_to_basket(self):
+        basket_link = \
+            self.browser.find_element(*BasePageLocators.BASKET_LINK)
+        basket_link.click()
+
+    def should_not_be_items_in_the_basket(self):
+        assert self.is_not_element_present(*BasePageLocators.BASKET_NOT_EMPTY), \
+            "Basket is not empty"
+
+    def should_be_text_your_basket_is_empty(self):
+        assert self.is_element_present(*BasePageLocators.EMPTY_BASKET_TEXT), \
+            """No text 'Your basket is empty'"""
+
     def should_be_login_link(self):
         assert self.is_element_present(*BasePageLocators.LOGIN_LINK), \
             "Login link is not presented"
 
-    def is_element_present(self, how, what):
-        try:
-            self.browser.find_element(how, what)
-        except NoSuchElementException:
-            return False
-        return True
