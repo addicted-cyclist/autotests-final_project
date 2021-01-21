@@ -22,13 +22,15 @@ class ProductPage(BasePage):
         elements = self.browser.find_elements(*ProductPageLocators.ITEM_ADDED_TO_THE_BASKET)
         item_added_to_the_basket = elements[0]
         assert item_name.text == item_added_to_the_basket.text, \
-            f"Wrong item has been added to the basket - {item_added_to_the_basket.text}"
+            f"Wrong item has been added to the basket - {item_added_to_the_basket.text}, \
+            url - {self.browser.current_url}"
 
     def the_cost_of_the_basket_equals_the_item_price(self):
         basket_total = self.browser.find_element(*ProductPageLocators.BASKET_TOTAL_IS_NOW).text
         item_price = self.browser.find_element(*ProductPageLocators.ITEM_PRICE).text
         assert basket_total == item_price, \
-            "The cost of the basket is not the same as the price of the item"
+            f"The cost of the basket - {basket_total} - is not the same as the price of the item - {item_price}, " \
+            f"url - {self.browser.current_url}"
 
 
 
