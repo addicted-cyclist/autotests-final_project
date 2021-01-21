@@ -32,6 +32,14 @@ class ProductPage(BasePage):
             f"The cost of the basket - {basket_total} - is not the same as the price of the item - {item_price}, " \
             f"url - {self.browser.current_url}"
 
+    def should_not_be_success_message(self):
+        assert self.is_not_element_present(*ProductPageLocators.SUCCESS_MESSAGE), \
+            "Success message is presented, but should not be"
+
+    def success_message_should_disappear(self):
+        assert self.is_disappeared(*ProductPageLocators.SUCCESS_MESSAGE), \
+            "Success message should disappear, but it has not"
+
 
 
 

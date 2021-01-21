@@ -19,5 +19,7 @@ class ProductPageLocators:
                   """//*/p[@class="price_color"]""")
     ITEM_ADDED_TO_THE_BASKET = (By.XPATH, \
                                """//*[@class="alert alert-safe alert-noicon alert-success  fade in"]/div/strong""")
+    SUCCESS_MESSAGE = (By.XPATH, \
+                       """//*[@class="alert alert-safe alert-noicon alert-success  fade in"]/div""")
 
 
