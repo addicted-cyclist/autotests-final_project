@@ -7,6 +7,7 @@ class BasePageLocators:
     BASKET_LINK = (By.XPATH, """//*[@id="default"]/header/div[1]/div/div[2]/span/a""")
     BASKET_NOT_EMPTY = (By.XPATH, """//*[@class="col-sm-6 h3"]""")
     EMPTY_BASKET_TEXT = (By.XPATH, """//*[@id="content_inner"]""")
+    USER_ICON = (By.XPATH, """//*[@class="icon-user"]""")
 
 
 #class MainPageLocators:
@@ -16,6 +17,10 @@ class BasePageLocators:
 class LoginPageLocators:
     LOGIN_FORM = (By.ID, "login_form")
     REGISTER_FORM = (By.ID, "register_form")
+    EMAIL_REGISTER = (By.XPATH, """//*[@name="registration-email"]""")
+    PASSWORD_REGISTER = (By.XPATH, """//*[@name="registration-password1"]""")
+    PASSWORD_CONFIRMATION_REGISTER = (By.XPATH, """//*[@name="registration-password2"]""")
+    REGISTER_BUTTON = (By.XPATH, """//*[@name="registration_submit"]""")
 
 
 class ProductPageLocators:

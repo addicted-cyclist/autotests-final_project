@@ -1,62 +1,86 @@
 import pytest
 import time
 from pages.product_page import ProductPage
+from pages.login_page import LoginPage
 
 
-#@pytest.mark.skip
-@pytest.mark.parametrize('link', ["http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0",
-                                  "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer1",
-                                  "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer2",
-                                  "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer3",
-                                  "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer4",
-                                  "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer5",
-                                  "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer6",
-                                  pytest.param(
-                                    "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer7",
-                                      marks=pytest.mark.xfail),
-                                  "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer8",
-                                  "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer9"])
-def test_guest_can_add_product_to_basket(browser, link):
-    page = ProductPage(browser, link)
-    page.open()
-    page.add_to_basket()
-    page.solve_quiz_and_get_code()
-    page.correct_item_has_been_added_to_the_basket()
-    page.the_cost_of_the_basket_equals_the_item_price()
+@pytest.mark.basket_guest
+class TestGuestBasketFromProductPage:
+    @pytest.mark.parametrize('link',
+                             ["http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0",
+                              "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer1",
+                              "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer2",
+                              "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer3",
+                              "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer4",
+                              "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer5",
+                              "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer6",
+                              pytest.param(
+                                  "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer7",
+                                  marks=pytest.mark.xfail),
+                              "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer8",
+                              "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer9"])
+    def test_guest_can_add_product_to_basket(self, browser, link):
+        page = ProductPage(browser, link)
+        page.open()
+        page.add_to_basket()
+        page.solve_quiz_and_get_code()
+        page.correct_item_has_been_added_to_the_basket()
+        page.the_cost_of_the_basket_equals_the_item_price()
+
+    def test_guest_cant_see_product_in_basket_opened_from_product_page(self, browser):
+        link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-girl-who-kicked-the-hornets-nest_199/"
+        page = ProductPage(browser, link)
+        page.open()
+        page.go_to_basket()
+        page.should_not_be_items_in_the_basket()
+        page.should_be_text_your_basket_is_empty()
+
+    @pytest.mark.xfail
+    def test_guest_cant_see_success_message_after_adding_product_to_basket(self, browser):
+        link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-girl-who-kicked-the-hornets-nest_199/"
+        page = ProductPage(browser, link)
+        page.open()
+        page.add_to_basket()
+        page.should_not_be_success_message()
+
+    @pytest.mark.xfail
+    def test_message_disappeared_after_adding_product_to_basket(self, browser):
+        link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/hacking-exposed-wireless_208/"
+        page = ProductPage(browser, link)
+        page.open()
+        page.add_to_basket()
+        page.success_message_should_disappear()
 
 
-def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
-    link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-girl-who-kicked-the-hornets-nest_199/"
-    page = ProductPage(browser, link)
-    page.open()
-    page.go_to_basket()
-    page.should_not_be_items_in_the_basket()
-    page.should_be_text_your_basket_is_empty()
+@pytest.mark.basket_user
+class TestUserBasketFromProductPage:
 
+    def test_registered_user_can_add_product_to_basket(self, browser):
+        link = "http://selenium1py.pythonanywhere.com/catalogue/the-girl-who-played-with-non-fire_203/"
+        page = ProductPage(browser, link)
+        page.open()
+        page.add_to_basket()
+        page.correct_item_has_been_added_to_the_basket()
+        page.the_cost_of_the_basket_equals_the_item_price()
 
-@pytest.mark.xfail
-def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
-    link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-girl-who-kicked-the-hornets-nest_199/"
-    page = ProductPage(browser, link)
-    page.open()
-    page.add_to_basket()
-    page.should_not_be_success_message()
+    def test_registered_user_cant_see_success_message(self, browser):
+        link = "http://selenium1py.pythonanywhere.com/catalogue/the-girl-who-played-with-non-fire_203/"
+        page = ProductPage(browser, link)
+        page.open()
+        page.should_not_be_success_message()
 
-
-def test_guest_cant_see_success_message(browser):
-    link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/hacking-exposed-wireless_208/"
-    page = ProductPage(browser, link)
-    page.open()
-    page.should_not_be_success_message()
-
-
-@pytest.mark.xfail
-def test_message_disappeared_after_adding_product_to_basket(browser):
-    link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/hacking-exposed-wireless_208/"
-    page = ProductPage(browser, link)
-    page.open()
-    page.add_to_basket()
-    page.success_message_should_disappear()
+    @pytest.fixture(scope="function", autouse=True)
+    def setup(self, browser):
+        login_link = "http://selenium1py.pythonanywhere.com/accounts/login/"
+        # email = "sil@gmail.com"
+        # password = "2,rkN_4h-"
+        email = str(time.time()) + "@gmail.com"
+        password = str(time.time())
+        page = LoginPage(browser, login_link)
+        page.open()
+        page.register_new_user(email, password)
+        page.should_be_authorized_user()
+        yield browser
 
 
 def test_guest_should_see_login_link_on_product_page(browser):

@@ -10,7 +10,6 @@ class ProductPage(BasePage):
             self.browser.find_element(*ProductPageLocators.ADD_TO_BASKET)
         add_to_basket_button.click()
 
-
     def correct_item_has_been_added_to_the_basket(self):
         item_name = self.browser.find_element(*ProductPageLocators.ITEM_NAME)
         elements = self.browser.find_elements(*ProductPageLocators.ITEM_ADDED_TO_THE_BASKET)
