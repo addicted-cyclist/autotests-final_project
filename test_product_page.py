@@ -63,8 +63,6 @@ class TestUserBasketFromProductPage:
     @pytest.fixture(scope="function", autouse=True)
     def setup(self, browser):
         login_link = "http://selenium1py.pythonanywhere.com/accounts/login/"
-        # email = "sil@gmail.com"
-        # password = "2,rkN_4h-"
         email = str(time.time()) + "@gmail.com"
         password = str(time.time())
         page = LoginPage(browser, login_link)
