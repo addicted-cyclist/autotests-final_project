@@ -46,7 +46,7 @@ class TestGuestBasketFromProductPage:
 @pytest.mark.basket_user
 class TestUserBasketFromProductPage:
     @pytest.mark.need_review
-    def test_registered_user_can_add_product_to_basket(self, browser):
+    def test_user_can_add_product_to_basket(self, browser):
         link = "http://selenium1py.pythonanywhere.com/catalogue/the-girl-who-played-with-non-fire_203/"
         page = ProductPage(browser, link)
         page.open()
@@ -54,7 +54,7 @@ class TestUserBasketFromProductPage:
         page.correct_item_has_been_added_to_the_basket()
         page.the_cost_of_the_basket_equals_the_item_price()
 
-    def test_registered_user_cant_see_success_message(self, browser):
+    def test_user_cant_see_success_message(self, browser):
         link = "http://selenium1py.pythonanywhere.com/catalogue/the-girl-who-played-with-non-fire_203/"
         page = ProductPage(browser, link)
         page.open()
